@@ -29,15 +29,15 @@ To do this, apps that use CSVParser should implement the `DataProcessor` interfa
 
     // Put your own business logic here
     func (*MyDataProcessor) ProcessLineItems(items []string, currentLine uint64) {
-        fmt.Printf("%v: %v", currentLine, items)
+        fmt.Printf("%v: %v\n", currentLine, items)
     }
 
     func (*MyDataProcessor) onDone() {
-        fmt.Printf("MyDataProcessor: onDone()")
+        fmt.Printf("MyDataProcessor: onDone()\n")
     }
 
     func (*MyDataProcessor) onError(err error) {
-        fmt.Printf("MyDataProcessor: onError(): %v", err)
+        fmt.Printf("MyDataProcessor: onError(): %v\n", err)
     }
 
     func main() {

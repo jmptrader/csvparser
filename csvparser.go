@@ -14,8 +14,8 @@ var (
 
 // User should implement this interface to process items of each line.
 type DataProcessor interface {
-	onDone()
-	onError(err error)
+	OnDone()
+	OnError(err error)
 	ProcessLineItems(items []string, currentLine uint64)
 }
 
@@ -49,7 +49,7 @@ func (p *CSVParser) Start() error {
 	file, err := os.Open(p.file)
 	if err != nil {
 		logger.Printf("os.Open(%s) err: %s\n", p.file, err)
-		p.processor.onError(err)
+		p.processor.OnError(err)
 		return err
 	}
 	defer file.Close()
@@ -66,11 +66,11 @@ func (p *CSVParser) Start() error {
 
 	if err := scanner.Err(); err != nil {
 		logger.Printf("scanner.Err(): %s\n", err)
-		p.processor.onError(err)
+		p.processor.OnError(err)
 		return err
 	}
 
-	p.processor.onDone()
+	p.processor.OnDone()
 	return nil
 }
 

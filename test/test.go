@@ -1,7 +1,13 @@
-package csvparser
+package main
 
 import (
-	"testing"
+	"github.com/northbright/csvparser"
+	"github.com/northbright/fnlog"
+	"log"
+)
+
+var (
+	logger *log.Logger
 )
 
 type MyDataProcessor struct {
@@ -19,10 +25,14 @@ func (*MyDataProcessor) OnError(err error) {
 	logger.Printf("MyDataProcessor: OnError(): %v", err)
 }
 
-func TestCSVParser(t *testing.T) {
+func main() {
 	logger.Printf("NewCSVParser()...")
 
-	p := NewCSVParser("./1.csv", ",", &MyDataProcessor{})
+	p := csvparser.NewCSVParser("./1.csv", ",", &MyDataProcessor{})
 
 	p.Start()
+}
+
+func init() {
+	logger = fnlog.New("")
 }

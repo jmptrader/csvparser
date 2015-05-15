@@ -7,8 +7,8 @@ To do this, apps that use CSVParser should implement the `DataProcessor` interfa
 
     // User should implement this interface to process items of each line.
     type DataProcessor interface {
-        onDone()
-        onError(err error)
+        OnDone()
+        OnError(err error)
         ProcessLineItems(items []string, currentLine uint64)
     }
 
@@ -23,7 +23,7 @@ To do this, apps that use CSVParser should implement the `DataProcessor` interfa
     )
 
     // Implement DataProcessor interface:
-    // ProcessLineItems(), onDone(), onError()
+    // ProcessLineItems(), OnDone(), OnError()
     type MyDataProcessor struct {
     }
 
@@ -32,12 +32,12 @@ To do this, apps that use CSVParser should implement the `DataProcessor` interfa
         fmt.Printf("%v: %v\n", currentLine, items)
     }
 
-    func (*MyDataProcessor) onDone() {
-        fmt.Printf("MyDataProcessor: onDone()\n")
+    func (*MyDataProcessor) OnDone() {
+        fmt.Printf("MyDataProcessor: OnDone()\n")
     }
 
-    func (*MyDataProcessor) onError(err error) {
-        fmt.Printf("MyDataProcessor: onError(): %v\n", err)
+    func (*MyDataProcessor) OnError(err error) {
+        fmt.Printf("MyDataProcessor: OnError(): %v\n", err)
     }
 
     func main() {

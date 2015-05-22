@@ -46,6 +46,7 @@ func NewCSVParser(file, sep string, processor DataProcessor) (p *CSVParser) {
 //     error
 func (p *CSVParser) Start() error {
 	var n uint64 = 0
+	logger.Printf("p.file = %v", p.file)
 	file, err := os.Open(p.file)
 	if err != nil {
 		logger.Printf("os.Open(%s) err: %s\n", p.file, err)

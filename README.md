@@ -7,7 +7,7 @@ To do this, apps that use CSVParser should implement the `DataProcessor` interfa
 
     // User should implement this interface to process items of each line.
     type DataProcessor interface {
-        OnDone()
+        OnDone(rows [][]string)
         OnError(err error)
         ProcessLineItems(items []string, currentLine uint64)
     }
@@ -32,7 +32,7 @@ To do this, apps that use CSVParser should implement the `DataProcessor` interfa
         fmt.Printf("%v: %v\n", currentLine, items)
     }
 
-    func (*MyDataProcessor) OnDone() {
+    func (*MyDataProcessor) OnDone(rows [][]string) {
         fmt.Printf("MyDataProcessor: OnDone()\n")
     }
 

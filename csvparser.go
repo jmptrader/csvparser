@@ -14,7 +14,7 @@ var (
 
 // User should implement this interface to process items of each line.
 type DataProcessor interface {
-	OnDone()
+	OnDone(rows [][]string)
 	OnError(err error)
 	ProcessLineItems(items []string, currentLine uint64)
 }
@@ -58,11 +58,13 @@ func (p *CSVParser) Start() error {
 	scanner := bufio.NewScanner(file)
 	line := ""
 	items := []string{}
+	rows := [][]string{}
 	for scanner.Scan() {
 		line = scanner.Text()
 		items = strings.Split(line, p.sep)
 		n++
 		p.processor.ProcessLineItems(items, n)
+		rows = append(rows, items)
 	}
 
 	if err := scanner.Err(); err != nil {
@@ -71,7 +73,7 @@ func (p *CSVParser) Start() error {
 		return err
 	}
 
-	p.processor.OnDone()
+	p.processor.OnDone(rows)
 	return nil
 }
 

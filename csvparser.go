@@ -78,5 +78,5 @@ func (p *CSVParser) Start() error {
 }
 
 func init() {
-	logger = fnlog.New("")
+	logger = fnlog.New("", true, false, false)
 }

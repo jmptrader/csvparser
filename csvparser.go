@@ -2,51 +2,49 @@ package csvparser
 
 import (
 	"bufio"
-	"github.com/northbright/fnlog"
+	"github.com/northbright/dbglog"
 	"log"
 	"os"
 	"strings"
 )
 
 var (
+	DEBUG  bool = false // Set it to true if you want to enable debug messages from this package.
 	logger *log.Logger
 )
 
 // User should implement this interface to process items of each line.
 type DataProcessor interface {
-	OnDone(rows [][]string)
-	OnError(err error)
-	ProcessLineItems(items []string, currentLine uint64)
+	OnDone(rows [][]string)                              // Callback function on all rows processed. Rows: all rows processed.
+	OnError(err error)                                   // Callback function on error.
+	ProcessLineItems(items []string, currentLine uint64) // Callback function to process each row(line) of CSV file.
 }
 
 // CSVParser struct
-// file: File name
-// sep: Separator
-// processor: DataProcessor interface
 type CSVParser struct {
-	file      string
-	sep       string
-	processor DataProcessor
+	file      string        // File name
+	sep       string        // Separator
+	processor DataProcessor // DataProcessor interface
 }
 
-// New a CSVParser
-// Params:
-//     file: File name.
-//     sep: Separator of input file. Default CSV separator is ','.
-//     processor: User should implement DataProcessor interface to provide the function to process items of each line.
-// Return:
-//     *CSVParser
+// NewCSVParser() creats a CSVParser
+//
+//   Params:
+//       file: File name.
+//       sep: Separator of input file. Default CSV separator is ','.
+//       processor: User should implement DataProcessor interface to provide the function to process items of each line.
+//   Return:
+//       *CSVParser
 func NewCSVParser(file, sep string, processor DataProcessor) (p *CSVParser) {
 	p = &CSVParser{file, sep, processor}
 	return p
 }
 
-// Start parsing CSV file
-// Returns:
-//     error
+// Start() starts parsing the CSV file.
 func (p *CSVParser) Start() error {
 	var n uint64 = 0
 	logger.Printf("p.file = %v", p.file)
+	logger.Printf("xxxxx")
 	file, err := os.Open(p.file)
 	if err != nil {
 		logger.Printf("os.Open(%s) err: %s\n", p.file, err)
@@ -78,5 +76,5 @@ func (p *CSVParser) Start() error {
 }
 
 func init() {
-	logger = fnlog.New("", true, false, false)
+	logger = dbglog.New(&DEBUG)
 }

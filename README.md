@@ -9,4 +9,4 @@ To do this, apps that use CSVParser should implement the `DataProcessor` interfa
 
 
 #### LICENSE
-*[MIT License](./LICENSE)
+* [MIT License](./LICENSE)

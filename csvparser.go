@@ -2,15 +2,13 @@ package csvparser
 
 import (
 	"bufio"
-	"github.com/northbright/dbglog"
-	"log"
+	"fmt"
 	"os"
 	"strings"
 )
 
 var (
-	DEBUG  bool = false // Set it to true if you want to enable debug messages from this package.
-	logger *log.Logger
+	DEBUG bool = false // Set it to true if you want to enable debug messages from this package.
 )
 
 // User should implement this interface to process items of each line.
@@ -43,11 +41,14 @@ func NewCSVParser(file, sep string, processor DataProcessor) (p *CSVParser) {
 // Start() starts parsing the CSV file.
 func (p *CSVParser) Start() error {
 	var n uint64 = 0
-	logger.Printf("p.file = %v", p.file)
-	logger.Printf("xxxxx")
+	if DEBUG {
+		fmt.Printf("p.file = %v", p.file)
+	}
 	file, err := os.Open(p.file)
 	if err != nil {
-		logger.Printf("os.Open(%s) err: %s\n", p.file, err)
+		if DEBUG {
+			fmt.Printf("os.Open(%s) err: %s\n", p.file, err)
+		}
 		p.processor.OnError(err)
 		return err
 	}
@@ -66,15 +67,13 @@ func (p *CSVParser) Start() error {
 	}
 
 	if err := scanner.Err(); err != nil {
-		logger.Printf("scanner.Err(): %s\n", err)
+		if DEBUG {
+			fmt.Printf("scanner.Err(): %s\n", err)
+		}
 		p.processor.OnError(err)
 		return err
 	}
 
 	p.processor.OnDone(rows)
 	return nil
-}
-
-func init() {
-	logger = dbglog.New(&DEBUG)
 }
